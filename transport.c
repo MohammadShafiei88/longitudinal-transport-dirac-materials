@@ -17,7 +17,7 @@ int main()
 	double *d,*dr,*dl,*Dd,*C,*A,*A1,*B,*B1,*E,*F,*E1,*F1,*work1;
 	double *sigma_leftlead,*sigma_rightlead,*sigmastar_leftlead,*sigmastar_rightlead;
 	double *T1_leftlead,*T2_leftlead,*T1_rightlead,*T2_rightlead,*T1_dr,*T1_dl;
-	double *MM0,*Tx,*Txy1,*Txy2,*Tz,*Txd,*Txy1d,*Txy2d,*Tzd;
+	double *MM0,*Tx,*Ty,*Tz,*zeeman_top,*zeeman_bottom,*Txd,*Tyd,*Tzd;
 	//double M0;
 	//double AA1,AA2,BB1,BB2,CC1,CC2;
 
@@ -29,22 +29,16 @@ int main()
 	//   double n_phi, y_n, lambda, B_field, plank_electron;
 
 
-	const double aa = 4.1355/sqrt(3.0);
-	const double cc = 28.6152/3.0;
-	const double AA1 = 2.26/cc;
-	const double AA2 = 3.33*(2.0/3.0)/aa;
-	const double BB1 = 6.86/(cc*cc);
-	const double BB2 = 44.5/(aa*aa);
-//	const double CC1 = 5.74/(cc*cc);
-//	const double CC2 = 30.4/(aa*aa);
-	const double CC1 = 0.0;
-	const double CC2 = 0.0;
+	const double aa = 1.0;
+	const double AA = 0.5;
+	const double BB = 0.25;
+	const double MM = 0.3;
+	const double delta_top = 0.0;
+    	const double delta_bottom = 0.0;
 
-	const double M0 = -0.28 -6*BB2 -2*BB1;
-
-	const int Nx = 10;
-	const int Ny = 10;
-	const int Nz = 10;
+	const int Nx = 5;
+	const int Ny = 5;
+	const int Nz = 5;
 	const int NSyz = Ny*Nz;
 	const int Nl = NSyz*4;
 	const int ND = Nx*Ny*Nz*4;
@@ -83,46 +77,21 @@ int main()
 
 	MM0=(double *)malloc(Nm*Nm*2*sizeof(double));
 	Tx=(double *)malloc(Nm*Nm*2*sizeof(double));
+	Ty=(double *)malloc(Nm*Nm*2*sizeof(double));
 	Tz=(double *)malloc(Nm*Nm*2*sizeof(double));
-	Txy1=(double *)malloc(Nm*Nm*2*sizeof(double));
-	Txy2=(double *)malloc(Nm*Nm*2*sizeof(double));
- 	
 	Txd=(double *)malloc(Nm*Nm*2*sizeof(double));
+	Tyd=(double *)malloc(Nm*Nm*2*sizeof(double));
 	Tzd=(double *)malloc(Nm*Nm*2*sizeof(double));
-	Txy1d=(double *)malloc(Nm*Nm*2*sizeof(double));
-	Txy2d=(double *)malloc(Nm*Nm*2*sizeof(double));
+ 	zeeman_top=(double *)malloc(Nm*Nm*2*sizeof(double));
+ 	zeeman_bottom=(double *)malloc(Nm*Nm*2*sizeof(double));
+	//Tyd=(double *)malloc(Nm*Nm*2*sizeof(double));
+	//Tzd=(double *)malloc(Nm*Nm*2*sizeof(double));
 	
 
 
 	#include "create_TT_matrices.c"
 
-/*	
-		for(i=0;i<(Nm);i++)
-		  {for(k=0;k<(Nm);k++)
-			 { printf("%.4f\t%.4f\n",Tx[2*(k*(Nm)+i)],Tx[2*(k*(Nm)+i)+1]);
-			   //printf("%.4f\t%.4f\n",dl_up_up[2*(k*(Nl+2)+i)],dl_up_up[2*(k*(Nl+2)+i)+1]);
-			  }
-		   }
-		for(i=0;i<(Nm);i++)
-		  {for(k=0;k<(Nm);k++)
-			 { printf("%.4f\t%.4f\n",Txy1[2*(k*(Nm)+i)],Txy1[2*(k*(Nm)+i)+1]);
-			   //printf("%.4f\t%.4f\n",dl_up_up[2*(k*(Nl+2)+i)],dl_up_up[2*(k*(Nl+2)+i)+1]);
-			  }
-		   }
-		for(i=0;i<(Nm);i++)
-		  {for(k=0;k<(Nm);k++)
-			 { printf("%.4f\t%.4f\n",Txy2[2*(k*(Nm)+i)],Txy2[2*(k*(Nm)+i)+1]);
-			   //printf("%.4f\t%.4f\n",dl_up_up[2*(k*(Nl+2)+i)],dl_up_up[2*(k*(Nl+2)+i)+1]);
-			  }
-		   }
-		for(i=0;i<(Nm);i++)
-		  {for(k=0;k<(Nm);k++)
-			 { printf("%.4f\t%.4f\n",Tz[2*(k*(Nm)+i)],Tz[2*(k*(Nm)+i)+1]);
-			   //printf("%.4f\t%.4f\n",dl_up_up[2*(k*(Nl+2)+i)],dl_up_up[2*(k*(Nl+2)+i)+1]);
-			  }
-		   }
-*/
-//return 0;
+
 
 	xx=(double *)malloc(ND*sizeof(double));
 	yy=(double *)malloc(ND*sizeof(double));
@@ -131,10 +100,10 @@ int main()
 	for(i=0;i<ND;i++)
 	{
 		iu = i/4;
-		xx[i] = (iu/(Ny*Nz))*aa+((iu%Ny+1)%2)*0.5*aa;
-		yy[i] = (iu%Ny)*sqrt(3.0)*0.5*aa;
-		zz[i] = (iu%(Ny*Nz))/Ny*cc;
-	//if(zz[i]<1.01*2*cc && zz[i]>0.99*2*cc)   printf("%.3f\t%.3f\n",xx[i],yy[i]);
+		xx[i] = (iu/(Ny*Nz))*aa;
+		yy[i] = (iu%Ny)*aa;
+		zz[i] = (iu%(Ny*Nz))/Ny*aa;
+	
 	}
 	green=(double *)malloc(ND*ND*2*sizeof(double));
 	gama_1=(double *)malloc((Nl)*(Nl)*2*sizeof(double));
@@ -151,7 +120,7 @@ int main()
 	T2_rightlead=(double*)malloc((Nl)*(Nl)*2*sizeof(double));
 	
 	
-for(e=-30.0;e<30.0;e+=0.5)
+	for(e=0.0;e<0.5;e+=0.05)
 {
 	#include "Rightlead_green.c"
 	#include "Leftlead_green.c"
@@ -326,7 +295,7 @@ for(e=-30.0;e<30.0;e+=0.5)
 	}
 
 
-printf("%.8f\t\t\t%.8f\t\t\t%.8f\n",e,Tr_r,Tr_i);
+printf("%.4f\t\t\t%.4f\t\t\t%.4f\n",e,Tr_r,Tr_i);
 
 } /* End of for e energy */
 
@@ -337,14 +306,16 @@ printf("%.8f\t\t\t%.8f\t\t\t%.8f\n",e,Tr_r,Tr_i);
 
 	free(MM0);
 	free(Tx);
+	free(Ty);
 	free(Tz);
-	free(Txy1);
-	free(Txy2);
-
 	free(Txd);
+	free(Tyd);
 	free(Tzd);
-	free(Txy1d);
-	free(Txy2d);
+	free(zeeman_top);
+	free(zeeman_bottom);
+	//free(Tyd);
+	//free(Tzd);
+
 	free(gama_G1);
 	free(gama_G2);
 	free(gama_1);

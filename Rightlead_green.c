@@ -5,8 +5,6 @@ Dd=(double *)malloc(Nl*Nl*2*sizeof(double));
 C =(double *)malloc(Nl*Nl*2*sizeof(double));
 A =(double *)malloc(Nl*Nl*2*sizeof(double));
 A1=(double *)malloc(Nl*Nl*2*sizeof(double));
-//B =(double *)malloc(Nl*Nl*2*sizeof(double));	//BUG (maybe alloc is to small, or maybe we are writing at the wrong spot)
-								 //DEBUG: allocate way too much memory TODO fix bug
 B =(double *)malloc(Nl*Nl*2*sizeof(double));
 B1=(double *)malloc(Nl*Nl*2*sizeof(double));
 								 /*E=AxDd(-1)xB=E1xB*/
@@ -25,7 +23,7 @@ it = 1;
 
 
 //while(it<40)
-while(it<25)
+while(it<40)
 {
 
 	for(i=0;i<Nl;i++)
@@ -72,24 +70,7 @@ printf("%d\t%.6f\n",i,Dd[i]);
 	free(work1);
 	free(ipiv1);
 
-/*
-if(it==20)
-for(i=0;i<2*Nl*Nl;i++)
-printf("%d\t%.6f\n",i,Dd[i]);
-*/
-/*
-if(it==23)
-for(i=0;i<2*Nl*Nl;i++)
-printf("%d\t%.6f\n",i,Dd[i]);
-*/
 
-/*
-		if(it==10)	
-		for(i=0;i<Nl;i++)
-		{for(j=0;j<Nl;j++)
-		printf("i=%d  , j=%d , Dd[2*(%d*Nl+%d)]=%g ,   Dd[2*(%d*Nl+%d)+1]=%g\n",i,j,j,i,Dd[2*(j*(Nl+1)+i)],j,i,Dd[2*(j*(Nl+1)+i)+1]);
-		}
-*/
 
 	/*initialize E=AxDd(-1)xB=E1xB*/
 	for(i=0;i<Nl;i++)
@@ -103,11 +84,8 @@ printf("%d\t%.6f\n",i,Dd[i]);
 			}
 		}
 	}
-/*
-if(it==23)
-for(i=0;i<2*Nl*Nl;i++)
-printf("%d\t%.6f\n",i,B[i]);
-*/
+
+
 	for(i=0;i<Nl;i++)
 	{
 		for(k=0;k<Nl;k++)
@@ -119,12 +97,7 @@ printf("%d\t%.6f\n",i,B[i]);
 			}
 		}
 	}
-/*
-if(it==20)
-for(i=0;i<2*Nl*Nl;i++)
-printf("%d\t%.6f\n",i,B[i]);
-*/
-	/*initialize F=BxDd(-1)xA=F1xA*/
+
 	for(i=0;i<Nl;i++)
 	{
 		for(k=0;k<Nl;k++)
@@ -136,11 +109,8 @@ printf("%d\t%.6f\n",i,B[i]);
 			}
 		}
 	}
-/*
-if(it==20)
-for(i=0;i<2*Nl*Nl;i++)
-printf("%d\t%.6f\n",i,F1[i]);
-*/
+
+
 	for(i=0;i<Nl;i++)
 	{
 		for(k=0;k<Nl;k++)
@@ -173,7 +143,17 @@ printf("%d\t%.6f\n",i,F1[i]);
 		}
 	}
 /*
-if(it==23)
+if(it==38||it==39)
+for(i=0;i<2*Nl*Nl;i++)
+printf("%d\t%.6f\n",i,Dd[i]);
+
+
+if(it==38||it==39)
+for(i=0;i<2*Nl*Nl;i++)
+printf("%d\t%.6f\n",i,A[i]);
+
+
+if(it==38||it==39)
 for(i=0;i<2*Nl*Nl;i++)
 printf("%d\t%.6f\n",i,Dd[i]);
 */

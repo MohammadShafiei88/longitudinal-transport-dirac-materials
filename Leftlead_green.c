@@ -21,7 +21,7 @@ F1=(double *)malloc(Nl*Nl*2*sizeof(double));
 #include "initialize_leftlead.c"
 it = 1;
 //while(it<40)
-while(it<25)
+while(it<40)
 {
 
 	for(i=0;i<Nl;i++)
