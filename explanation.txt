@@ -1,0 +1,67 @@
+We want to show how the surface Green’s function of an isolated semi-infinite lead can
+be calculated.
+
+The definition of the total retarded Green’s function of an isolated semi-infinite lead is
+given by
+
+g_L = [(E + iη)1 − H_L]^{-1}, (B.1)
+
+where H_L is the Hamiltonian of the lead. As the Landauer–Büttiker formalism is used,
+the leads are considered to be perfect conductors. Subsequently the matrix representation
+of (E + iη)1 − H_L can be written in the following block tridiagonal form:
+
+(E + iη)1 − H_L =
+
+| d   -A   0    0   ... |
+| -B   D  -A    0   ... |
+|  0  -B   D   -A   ... |
+|  0   0  -B    D   ... |
+| ... ... ...  ...  ... |    (B.2)
+
+d, A, B, D are matrices with dimension M × M, where M is the width of the lead.
+The matrix D describes an isolated column of sites in the leads. The matrices A and
+B represent the hopping between neighboring columns. The matrix d represents the
+isolated column of the surface of the lead.
+
+The total Green’s function of the semi-infinite lead g_L is partitioned the same way.
+So Eq. (B.1) can be rewritten in the form
+
+(E + iη)1 − H_L · g_L = 1. (B.3)
+
+The subdivision of the Green’s function is analogous to that of the matrix (E + iη)1 − H_L.
+So g_11 is the Green’s function of the first column at the surface of the lead.
+
+If the first column of the matrix product is calculated, an infinite set of equations for g_11
+is obtained:
+
+d g_11 = 1 + A g_21, (B.4a)
+
+D g_p1 = B g_{p−1,1} + A g_{p+1,1}   for p ≥ 2. (B.4b)
+
+With the help of Eq. (B.4b) all Green’s functions g_p1 with even p = 2r can be expressed
+in terms of Green’s functions with odd p:
+
+g_{2r,1} = D^{-1} B g_{2r−1,1} + D^{-1} A g_{2r+1,1}. (B.5)
+
+Inserting this into Eq. (B.4) yields:
+
+(d − A D^{-1} B) g_11 = 1 + (A D^{-1} A) g_31, (B.6a)
+
+(D − A D^{-1} B − B D^{-1} A) g_{2r+1,1}
+= (B D^{-1} B) g_{2r−1,1} + (A D^{-1} A) g_{2r+3,1}. (B.6b)
+
+Defining the renormalized matrices:
+
+d' = d − A D^{-1} B, (B.7a)
+D' = D − A D^{-1} B − B D^{-1} A, (B.7b)
+A' = A D^{-1} A, (B.7c)
+B' = B D^{-1} B, (B.7d)
+
+the equations retain the same form and this procedure can be iterated.
+
+After n iterations the surface Green’s function is approximated by:
+
+g_11 ≈ d_n^{-1}. (B.9)
+
+This iterative procedure allows an efficient numerical evaluation of the surface Green’s
+function of semi-infinite leads.
